@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import './App.css';
+import Button from '@material-ui/core/Button';
 import click1 from './sounds/click1.wav';
 import click2 from './sounds/click2.wav';
+
 
 class App extends Component {
 
@@ -12,16 +14,10 @@ class App extends Component {
       bpm: 120,
       measure: 4,
       count: 0
-    }
+    };
   this.click1 = new Audio(click1);
   this.click2 = new Audio(click2);
   }
-
-  onChange = name => event => {
-    this.setState({
-      [name]: event.target.value});
-  };
-
 
   playSound = () => {
    const {count, measure} = this.state;
@@ -32,7 +28,7 @@ class App extends Component {
     }
     this.setState({
       count: (count + 1) % measure
-    })
+    });
   }
 
   onClick = () => {
@@ -44,21 +40,39 @@ class App extends Component {
     } else {
       this.timer = setInterval(this.playSound, (60 / this.state.bpm) * 1000);
       this.setState({
-        count: 0,
-        running: true
+        running: true,
+        count: 0
       }, this.playSound);
     }
   }
 
-  render() {
+  onChange = name => event => {
+    const bpm = event.target.value;
+    if(this.state.running) {
+      clearInterval(this.timer);
+      // changing bpm
+      this.timer = setInterval(this.playSound, (60 / bpm) * 1000);
+      this.setState({
+        [name]: event.target.value,
+        count: 0 
+        });
+      } else {
+        this.setState({
+          [name]: event.target.value
+        });
+      }
+  }
 
+  render() {
+    const {bpm, running, measure} = this.state;
     return (
       <div className="App">
-        <h1>BPM <span>{this.state.bpm}</span></h1>
-        <input type="range" min="60" max="240" value={this.state.bpm} onChange={this.onChange('bpm')}/>
-        <button onClick={this.onClick}>{!this.state.running ? 'Start' : 'Stop'}</button>
+        <h1>BPM <span>{bpm}</span></h1>
+        <input type="range" min="60" max="300" value={bpm} onChange={this.onChange('bpm')}/>
+        <Button size="large" color={running ? 'primary' : 'secondary'} onClick={this.onClick}>{!running ? 'Start' : 'Stop'}</Button>
         <p>{this.state.count}</p>
-        <h2>Measure <span><input min="4" max="16" type="number" onChange={this.onChange('measure')}/></span></h2>
+        <h2>Measure</h2>
+        <input min="2" max="16" type="number" value={measure} onChange={this.onChange('measure')}/>
       </div>
     );
   }
