@@ -14,7 +14,7 @@ class App extends Component {
       bpm: 120,
       measure: 4,
       count: 0
-    }
+    };
   this.click1 = new Audio(click1);
   this.click2 = new Audio(click2);
   }
@@ -26,9 +26,9 @@ class App extends Component {
     } else {
       this.click1.play()
     }
-    this.setState(state => ({
-      count: (state.count + 1) % state.measure
-    }));
+    this.setState({
+      count: (count + 1) % measure
+    });
   }
 
   onClick = () => {
@@ -40,16 +40,17 @@ class App extends Component {
     } else {
       this.timer = setInterval(this.playSound, (60 / this.state.bpm) * 1000);
       this.setState({
-        count: 0,
-        running: true
+        running: true,
+        count: 0
       }, this.playSound);
     }
   }
 
   onChange = name => event => {
     const bpm = event.target.value;
-    if(this.state.playing) {
+    if(this.state.running) {
       clearInterval(this.timer);
+      // changing bpm
       this.timer = setInterval(this.playSound, (60 / bpm) * 1000);
       this.setState({
         [name]: event.target.value,
