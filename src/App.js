@@ -49,7 +49,6 @@ class App extends Component {
   onChange = name => event => {
     if(this.state.running) {
       clearInterval(this.timer);
-      // changing bpm
       this.setState({
         [name]: event.target.value,
         count: 0 
