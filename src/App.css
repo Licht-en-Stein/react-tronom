@@ -1,6 +1,7 @@
 .App {
   margin-top:  5rem ;
   text-align: center;
+  color: #fff;
 }
 
 input[type=range] {

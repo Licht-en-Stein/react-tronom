@@ -38,24 +38,25 @@ class App extends Component {
         running: false
       });
     } else {
-      this.timer = setInterval(this.playSound, (60 / this.state.bpm) * 1000);
       this.setState({
         running: true,
         count: 0
       }, this.playSound);
+      this.timer = setInterval(this.playSound, (60 / this.state.bpm) * 1000);
     }
   }
 
   onChange = name => event => {
-    const bpm = event.target.value;
+    //const bpm = event.target.value;
+    //console.log(bpm)
     if(this.state.running) {
       clearInterval(this.timer);
       // changing bpm
-      this.timer = setInterval(this.playSound, (60 / bpm) * 1000);
       this.setState({
         [name]: event.target.value,
         count: 0 
         });
+      this.timer = setInterval(this.playSound, (60 / this.state.bpm) * 1000);
       } else {
         this.setState({
           [name]: event.target.value
